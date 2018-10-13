@@ -7,6 +7,7 @@ const app = express();
 const PORT = config(app);
 
 const initDB = require('./config/postgres');
+//initialize our database to our server
 const postgres = initDB(app);
 
 let pgResource = require('./api/pg-resource');
@@ -19,9 +20,6 @@ pgResource = pgResource(postgres);
  * you're ready to start your Apollo Server.
  *
  *  Uncomment the following lines when you're ready to start Apollo:
- *
- *  const initApollo = require('./config/apollo')
- *  initApollo({ app, pgResource })
  */
 
 const initApollo = require('./config/apollo');
@@ -47,5 +45,5 @@ const server = app.listen(PORT, () => {
 });
 
 server.on('error', err => {
-  console.log('there is an error---->', err);
+  console.log(err);
 });
