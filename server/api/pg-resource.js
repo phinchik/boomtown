@@ -21,7 +21,8 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: '', // @TODO: Authentication - Server
+        text:
+          'INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3) RETURNING *',
         values: [fullname, email, password]
       };
       try {
@@ -34,15 +35,15 @@ module.exports = postgres => {
           case /users_email_key/.test(e.message):
             throw 'An account with this email already exists.';
           default:
-            throw 'There was a problem creating your account.';
+            throw 'There is a problem on creating new User';
         }
       }
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: '', // @TODO: Authentication - Server
+        text: `SELECT * FROM users WHERE users.email = $1`,
         values: [email]
-      };
+      }; // @TODO: Authentication - Server
       try {
         const user = await postgres.query(findUserQuery);
         if (!user) throw 'User was not found.';

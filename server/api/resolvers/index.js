@@ -54,13 +54,21 @@ module.exports = app => {
         }
       },
       async items(parent, { filter }, { pgResource }, info) {
-        //done
-        return pgResource.getItems(filter);
+        try {
+          const items = await pgResource.getItems(filter);
+          return items;
+        } catch (e) {
+          throw new ApolloError(e);
+        }
         // -------------------------------
       },
       async tags(parent, { title }, { pgResource }, info) {
-        //done
-        return pgResource.getTags();
+        try {
+          const tags = await pgResource.getTags();
+          return tags;
+        } catch (e) {
+          throw new ApolloError(e);
+        }
         // -------------------------------
       }
     },
@@ -116,10 +124,14 @@ module.exports = app => {
          * @TODO: Replace this mock return statement with the correct user from Postgres
          * or null in the case where the item has not been borrowed.
          */
-        console.log('borrower----->', user.email);
-        return pgResource.getBorrowedItemsForUser(user.id);
-        // -------------------------------
+        try {
+          const borrowerId = await pgResource.getUserById(user.borrowerid);
+          return borrowerId;
+        } catch (e) {
+          throw new ApolloError(e);
+        }
       }
+      // -------------------------------
     }, // async imageurl({ imageurl, imageid, mimetype, data }) {
     //   if (imageurl) return imageurl
     //   if (imageid) {
@@ -155,6 +167,14 @@ module.exports = app => {
           user
         });
         return newItem;
+      },
+      async addUser(parent, args, context, info) {
+        const newUser = await context.pgResource.createUser({
+          fullname: args.fullname,
+          email: args.email,
+          password: args.password
+        });
+        return newUser;
       }
     }
   };
