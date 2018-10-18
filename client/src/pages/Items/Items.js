@@ -9,6 +9,7 @@ const Items = ({ classes }) => {
       <p>
         This is the items page located at <code>/items</code>.
       </p>
+      <h1> This Is Sample Message </h1>
     </div>
   );
 };
