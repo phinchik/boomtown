@@ -3,14 +3,14 @@ import React from 'react';
 
 import styles from './styles';
 
-const Profile = ({ classes }) => {
+const Profile = ({ classes, data }) => {
+  console.log('profile>>>>>>>>', data);
   return (
     <div>
-      <p>
-        This is the profile page located at <code>/profile/:userId</code>.
-      </p>
+      <p>PROFILE PAGE!!</p>
+      <p>{data}</p>
     </div>
   );
 };
 
-export default withStyles(styles)(Items);
+export default withStyles(styles)(Profile);

@@ -61,15 +61,19 @@ import Items from './pages/Items';
 // -------------------------------
 
 import './index.css';
+import Layout from './routes/Layout';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const App = () => {
   return (
-    <MuiThemeProvider theme={theme}>
-      <ApolloProvider client={client}>
-        <CssBaseline />
-        <Items />
-      </ApolloProvider>
-    </MuiThemeProvider>
+    <Router>
+      <MuiThemeProvider theme={theme}>
+        <ApolloProvider client={client}>
+          <CssBaseline />
+          <Layout />
+        </ApolloProvider>
+      </MuiThemeProvider>
+    </Router>
   );
 };
 
