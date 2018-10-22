@@ -14,8 +14,5 @@ module.exports = app => {
     database: app.get('PG_DB'),
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000
-    /** host:
-     *  @TODO: Supply the correct configuration values to connect to postgres
-     */
   });
 };

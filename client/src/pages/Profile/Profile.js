@@ -4,7 +4,6 @@ import React from 'react';
 import styles from './styles';
 
 const Profile = ({ classes, data }) => {
-  console.log('profile>>>>>>>>', data);
   return (
     <div>
       <p>PROFILE PAGE!!</p>

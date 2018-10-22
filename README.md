@@ -7,10 +7,10 @@
 
 ## How to Clone and Run BoomTown
 
-git clone https://github.com/phinchik/boomtown
-cd boomtown
-npm install
-npm start
+#git clone https://github.com/phinchik/boomtown
+#cd boomtown
+#npm install
+#npm start
 
 ## Author
 

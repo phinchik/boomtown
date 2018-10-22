@@ -3,12 +3,10 @@ import React from 'react';
 
 import styles from './styles';
 
-const Items = ({ classes, data }) => {
-  console.log('data >>>>', data);
+const Items = ({ classes }) => {
   return (
     <div>
-      <p>
-        {/* This is the items page located at <code>/items</code>. */}
+      {/* <p>
         {data.items.map(item => {
           return (
             <div>
@@ -16,7 +14,7 @@ const Items = ({ classes, data }) => {
             </div>
           );
         })}
-      </p>
+      </p> */}
       <h1> THIS IS ITEMS!!!! </h1>
     </div>
   );

@@ -49,9 +49,8 @@ module.exports = app => {
   app.set('PG_USER', process.env.PG_USER || 'boomtown');
   app.set('PG_PASSWORD', process.env.PG_PASSWORD || 'boomtown');
   app.set('PG_DB', process.env.PG_DB || 'boomtown');
-  app.set('JWT_SECRET', process.env.JWT_SECRET || 'localhost');
-  app.use(cookieParser());
 
+  app.use(cookieParser());
   if (process.env.NODE_ENV === 'production') {
     const root = path.resolve(__dirname, '../public');
 

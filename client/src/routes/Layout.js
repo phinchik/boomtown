@@ -14,7 +14,7 @@ export default () => (
       <Route exact path="/profile/:userid" component={Profile} />
       <Route exact path="/share" component={Share} />
       <Route exact path="/home" component={Home} />
-      <Redirect to="/home" component={Home} />
+      <Redirect to="/home" />
 
       <Route path="*" component={Items} />
     </Switch>

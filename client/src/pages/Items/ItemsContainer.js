@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import Items from './Items';
 import { ALL_ITEMS_QUERY } from '../../apollo/queries';
@@ -7,10 +6,12 @@ import { ALL_ITEMS_QUERY } from '../../apollo/queries';
 class ItemsContainer extends Component {
   render() {
     return (
-      <Query query={ALL_ITEMS_QUERY} variables={{ filter: -1 }}>
+      <Query query={ALL_ITEMS_QUERY} variables={{ filter: 1 }}>
         {({ loading, error, data }) => {
+          console.log('error', error);
+          console.log('data', data);
           if (loading) return 'loading';
-          if (error) return `${error}`;
+          if (error) return `${error.message}`;
           if (data) {
             console.log(data);
             return <Items data={data} />;
