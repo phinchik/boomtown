@@ -1,21 +1,19 @@
 import { withStyles } from '@material-ui/core/styles';
 import React from 'react';
+import CardForm from '../../components/CardForm/CardForm';
 
 import styles from './styles';
 
-const Items = ({ classes }) => {
+const Items = ({ classes, data }) => {
   return (
-    <div>
-      {/* <p>
-        {data.items.map(item => {
-          return (
-            <div>
-              id: {item.id} title: {item.title}
-            </div>
-          );
-        })}
-      </p> */}
-      <h1> THIS IS ITEMS!!!! </h1>
+    <div className={classes.itemContainer}>
+      {data.items.map(item => {
+        return (
+          <div key={item.id} className={classes.itemCards}>
+            <CardForm item={item} />
+          </div>
+        );
+      })}
     </div>
   );
 };

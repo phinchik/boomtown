@@ -12,6 +12,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Logo from '../../images/boomtown.svg';
+import Home from '../../pages/Home';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/icons/AddCircle';
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -39,40 +42,50 @@ class NavBar extends React.Component {
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const { location } = this.props;
-    console.log(this.props);
     return (
       location.pathname !== '/home' && (
         <div className={classes.root}>
           <AppBar position="static">
-            <Toolbar>
+            <Toolbar
+              style={{
+                margin: '5px',
+                display: 'flex',
+                justifyContent: 'space-between'
+              }}
+            >
               <a href="/client/src/pages/Items/index.js">
                 <img
                   src={Logo}
                   alt="Boomtown Logo"
                   style={{
                     height: '50px',
-                    width: '100px',
+                    width: '50px',
                     padding: '0px',
-                    margin: '0px'
+                    marginRight: '0px'
                   }}
                 />
               </a>
-
               <Typography
                 variant="h6"
                 color="inherit"
                 className={this.props.classes.grow}
-                style={{ marginLeft: '87%' }}
               />
+
               {auth && (
                 <div>
+                  <Button style={{ backgroundColor: 'pink' }}>
+                    <Link to="/share">
+                      <Icon /> SHARE SOMETHING
+                    </Link>
+                  </Button>
+
                   <IconButton
                     aria-owns={open ? 'menu-appbar' : null}
                     aria-haspopup="true"
                     onClick={this.handleMenu}
                     color="inherit"
                   >
-                    <AccountCircle />
+                    <AccountCircle style={{ padding: '0', marginLeft: '0' }} />
                   </IconButton>
                   <Menu
                     id="menu-appbar"
@@ -83,9 +96,11 @@ class NavBar extends React.Component {
                     onClose={this.handleClose}
                   >
                     <MenuItem onClick={this.handleClose}>
-                      <Link to="/Profile/1">Profile</Link>
+                      <Link to="/profile/1">Profile</Link>
                     </MenuItem>
-                    <MenuItem onClick={this.handleClose}>Sign Out</MenuItem>
+                    <MenuItem onClick={this.handleClose}>
+                      <Link to="/home">Log Out</Link>
+                    </MenuItem>
                   </Menu>
                 </div>
               )}
@@ -102,21 +117,3 @@ NavBar.propTypes = {
 };
 
 export default withStyles(style)(withRouter(NavBar));
-
-// class NavBar extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-
-//   render() {
-//     return (
-//       this.props.location.pathname !== '/home' && (
-//         <div>
-
-//         </div>
-//       )
-//     );
-//   }
-// }
-
-// export default withStyles(style)(withRouter(NavBar));

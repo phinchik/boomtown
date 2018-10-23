@@ -1,9 +1,8 @@
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    width: '100%',
+    display: 'flex'
   },
-  grow: {
-    flexGrow: 1
-  }
+  grow: {}
 });
 export default styles;

@@ -22,7 +22,7 @@ class ShareItemForm extends Component {
 
   render() {
     return (
-      <div className="ShareItemForm">
+      <div className={this.props.classes.ShareItemForm}>
         <Typography variant="display1" className={this.props.classes.headline}>
           Share. Borrow. Prosper.
         </Typography>

@@ -1,14 +1,19 @@
 const styles = theme => ({
   sharePage: {
-    padding: '5px',
-    marginRight: '30px',
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    margin: '50px 50px',
+    width: '80wv',
+    flexWrap: 'wrap'
   },
 
   sharePageItem1: {
-    width: '40%',
     justifyContent: 'space-around'
+  },
+  cardForm: {
+    backgroundColor: 'red',
+    width: '400px',
+    margin: '0 auto'
   }
 });
 

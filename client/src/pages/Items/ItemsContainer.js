@@ -6,7 +6,7 @@ import { ALL_ITEMS_QUERY } from '../../apollo/queries';
 class ItemsContainer extends Component {
   render() {
     return (
-      <Query query={ALL_ITEMS_QUERY} variables={{ filter: 1 }}>
+      <Query query={ALL_ITEMS_QUERY} variables={{ filter: -1 }}>
         {({ loading, error, data }) => {
           console.log('error', error);
           console.log('data', data);

@@ -1,6 +1,9 @@
 const styles = theme => ({
+  ShareItemForm: {
+    margin: '70px'
+  },
   root: {
-    margin: '0',
+    margin: '10px',
     display: 'none'
   },
   textField: {
