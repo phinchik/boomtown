@@ -1,12 +1,15 @@
 const styles = {
+  root: {
+    width: '100%'
+  },
   card: {
-    height: '400px',
+    height: '500px',
     width: '100%',
     flexWrap: 'wrap',
     justifyContent: 'space-arround'
   },
   media: {
-    height: 140,
+    height: '250px',
     backgroundColor: 'yellow'
   },
   row: {
@@ -15,24 +18,25 @@ const styles = {
     height: '60px'
   },
   avatar: {
-    marginTop: '10px'
+    marginTop: '30px'
   },
   user: {
-    marginTop: '10px',
+    fontSize: '18px',
+    fontWeight: '700',
+    height: '50px',
     marginLeft: '20px',
-    fontSize: '15px',
-    height: '20px'
+    position: 'absolute',
+    marginTop: '0'
   },
   userContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingBottom: '20px'
-  },
-  timeStart: {
-    fontWeight: '100'
+    display: 'block',
+    width: '300px',
+    height: '80px',
+    position: 'relative'
   },
   userInput: {
-    fontSize: '30px'
+    fontSize: '30px',
+    width: '100%'
   },
   DescribeInput: {
     fontSize: '20px',
@@ -41,8 +45,24 @@ const styles = {
 
   cardForm: {
     backgroundColor: 'red',
-    width: '400px',
+    width: '300px',
     margin: '0 auto'
+  },
+  cardContent: {
+    height: '100%'
+  },
+  button: {
+    marginTop: '25px'
+  },
+  timeCard: {
+    fontSize: '15px',
+    marginTop: '20px',
+    marginLeft: '20px',
+    justifyContent: 'center',
+    backgroundColor: 'pink'
+  },
+  userTags: {
+    width: '90%'
   }
 };
 export default styles;

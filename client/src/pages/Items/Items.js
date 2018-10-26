@@ -8,9 +8,10 @@ const Items = ({ classes, data }) => {
   return (
     <div className={classes.itemContainer}>
       {data.items.map(item => {
+        console.log('this is the item>>>>>', item);
         return (
-          <div key={item.id} className={classes.itemCards}>
-            <CardForm item={item} />
+          <div className={classes.itemCards}>
+            <CardForm key={item.id} item={item} />
           </div>
         );
       })}

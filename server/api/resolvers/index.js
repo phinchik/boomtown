@@ -1,9 +1,7 @@
 const { ApolloError } = require('apollo-server-express');
+const jwt = require('jsonwebtoken');
+const authMutations = require('./auth');
 
-// @TODO: Uncomment these lines later when we add auth
-// const jwt = require("jsonwebtoken")
-// const authMutations = require("./auth")
-// -------------------------------
 const { UploadScalar, DateScalar } = require('../custom-types');
 
 module.exports = app => {
@@ -80,18 +78,18 @@ module.exports = app => {
       }
     },
     Item: {
-      async ownerid(user, _, { pgResource }) {
+      async owner(item, _, { pgResource }) {
         try {
-          const user = await pgResource.getUserById(user.ownerid);
-          return user;
+          const itemUser = await pgResource.getUserById(item.ownerid);
+          if (!itemUser) console.log(null, user.id);
+          return itemUser;
         } catch (e) {
-          console.log('e >>>>>', e);
           throw new ApolloError(e);
         }
       },
-      async tags(user, _, { pgResource }) {
+      async tags(item, _, { pgResource }) {
         try {
-          const itemTags = await pgResource.getTagsForItem(user.id);
+          const itemTags = await pgResource.getTagsForItem(item.id);
           return itemTags;
         } catch (e) {
           throw new ApolloError(e);
@@ -106,33 +104,21 @@ module.exports = app => {
         }
       }
       // -------------------------------
-    }, // async imageurl({ imageurl, imageid, mimetype, data }) {
-    //   if (imageurl) return imageurl
+    },
+    // async imageurl({ imageurl, imageid, mimetype, data }) {
+    //   if (imageurl) return imageurl;
     //   if (imageid) {
-    //     return `data:${mimetype};base64, ${data}`
+    //     return `data:${mimetype};base64, ${data}`;
     //   }
-    // }
+    // },
     // -------------------------------
     Mutation: {
       //don't touch!!
       // @TODO: Uncomment this later when we add auth
-      // ...authMutations(app),
+      ...authMutations(app),
       // -------------------------------
 
       async addItem(parent, args, context, info) {
-        /**
-         *  @TODO: Destructuring
-         *
-         *  The 'args' and 'context' parameters of this resolver can be destructured
-         *  to make things more readable and avoid duplication.
-         *
-         *  When you're finished with this resolver, destructure all necessary
-         *  parameters in all of your resolver functions.
-         *
-         *  Again, you may look at the user resolver for an example of what
-         *  destructuring should look like.
-         */
-
         image = await image;
         const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
         const newItem = await context.pgResource.saveNewItem({
@@ -141,18 +127,6 @@ module.exports = app => {
           user
         });
         return newItem;
-      },
-      async addUser(parent, args, context, info) {
-        try {
-          const newUser = await context.pgResource.createUser({
-            fullname: args.user.fullname,
-            email: args.user.email,
-            password: args.user.password
-          });
-          return newUser;
-        } catch {
-          throw new ApolloError(e);
-        }
       }
     }
   };

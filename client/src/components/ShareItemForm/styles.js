@@ -1,10 +1,9 @@
 const styles = theme => ({
-  ShareItemForm: {
-    margin: '70px'
-  },
+  ShareItemForm: {},
   root: {
-    margin: '10px',
-    display: 'none'
+    border: 'none',
+    width: '600px',
+    height: '600px'
   },
   textField: {
     flexBasis: 200
@@ -25,11 +24,11 @@ const styles = theme => ({
     height: '110px',
     width: '100%'
   },
-  tagInput: {
-    height: '100px',
-    width: '100%'
+  tagsInput: {
+    width: '100%',
+    fontSize: '20px'
   },
-  headline: {
+  heading: {
     fontWeight: 600,
     color: theme.palette.text.primary,
     fontSize: theme.typography.display3.fontSize,
@@ -40,6 +39,15 @@ const styles = theme => ({
   formControl: {
     marginBottom: theme.spacing.unit * 2,
     width: '100%'
+  },
+  selectImage: {
+    // margin: '20px auto',
+    width: '590px',
+    backgroundColor: '#f9a825',
+    height: '40px',
+    fontSize: '25px',
+    fontWeight: '300px',
+    marginRight: '50px'
   }
 });
 export default styles;

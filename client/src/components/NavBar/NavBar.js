@@ -73,9 +73,9 @@ class NavBar extends React.Component {
 
               {auth && (
                 <div>
-                  <Button style={{ backgroundColor: 'pink' }}>
-                    <Link to="/share">
-                      <Icon /> SHARE SOMETHING
+                  <Button className={classes.shareButton}>
+                    <Link to="/share" className={classes.icon}>
+                      <Icon style={{ paddingTop: '5px' }} /> SHARE SOMETHING
                     </Link>
                   </Button>
 

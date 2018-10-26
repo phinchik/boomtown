@@ -20,7 +20,7 @@ module.exports = gql`
     title: String!
     imageurl: String
     description: String!
-    ownerid: User!
+    owner: User!
     tags: [Tag]
     timedate: Date!
     borrower: User
@@ -69,6 +69,11 @@ module.exports = gql`
     password: String!
   }
 
+  input logIn {
+    email: String!
+    password: String!
+  }
+
   type Query {
     user(id: ID!): User
     viewer: User
@@ -78,14 +83,8 @@ module.exports = gql`
 
   type Mutation {
     addItem(item: NewItemInput!, image: Upload): Item
-    addUser(user: NewUserInput!): User
+    signup(user: NewUserInput!): User
+    login(user: logIn!): User
+    logout: Boolean
   }
 `;
-
-// input NewUserInput {
-//   fullname: String!
-//   email: String!
-//   password: String!
-// }
-
-//  addUser(user: NewUserInput!): User

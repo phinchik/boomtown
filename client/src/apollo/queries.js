@@ -9,22 +9,19 @@ const ItemFields = gql`
     id
     title
     description
+    timedate
+    tags {
+      id
+      title
+    }
+    borrower {
+      id
+    }
+    owner {
+      id
+    }
   }
 `;
-
-// const UserField = gql`
-//   fragment UserField on User {
-//     bio
-//     email
-//     fullname
-//     items {
-//       ...ItemFields
-//     }
-//     borrowed {
-//       ...ItemFields
-//     }
-//   }
-// `;
 
 export const ITEM_QUERY = gql`
   query item($filter: ID!) {
@@ -34,7 +31,7 @@ export const ITEM_QUERY = gql`
 `;
 
 export const ALL_ITEMS_QUERY = gql`
-  query items($filter: ID) {
+  query item($filter: ID) {
     items(filter: $filter) {
       ...ItemFields
     }
@@ -57,14 +54,23 @@ export const ALL_USER_ITEMS_QUERY = gql`
   ${ItemFields}
 `;
 
-// export const ALL_TAGS_QUERY = gql`
-//   query {
-//     tags {
-//       id
-//       title
-//     }
-//   }
-// `;
+export const ALL_TAGS_QUERY = gql`
+  query {
+    tags {
+      id
+      title
+    }
+  }
+`;
+
+export const ADD_USER_MUTATION = gql`
+  mutation user($user: NewUserInput!) {
+    signup(user: $user) {
+      fullname
+      email
+    }
+  }
+`;
 
 // export const ADD_ITEM_MUTATION = gql`
 //   mutation addItem($item: NewItemInput!, $image: Upload!) {
@@ -102,24 +108,4 @@ export const ALL_USER_ITEMS_QUERY = gql`
 //   }
 // `;
 
-// imageurl
-// created
-// tags {
-//   id
-//   title
-//   fields
-// }
-// itemowner {
-//   id
-//   fullname
-//   email
-//   bio
-//   fields
-// }
-// borrower {
-//   id
-//   fullname
-//   email
-//   bio
-//   fields
-// }
+//
