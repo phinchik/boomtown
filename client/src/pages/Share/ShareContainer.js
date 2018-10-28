@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import Share from './Share';
 import { ALL_TAGS_QUERY } from '../../apollo/queries';

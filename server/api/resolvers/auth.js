@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 
 function setCookie({ tokenName, token, res }) {
   res.cookie(tokenName, token, {
-    maxAge: 60 * 60 * 24
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 2
   });
   // -------------------------------
 }
@@ -12,9 +14,9 @@ function setCookie({ tokenName, token, res }) {
 function generateToken(user, secret) {
   const { id, email, fullname, bio } = user;
   const token = jwt.sign({ id, email, fullname }, secret, {
-    expiresIn: '5h'
+    expiresIn: '2h'
   });
-
+  console.log('Generate token: ', token);
   return token;
 }
 
@@ -47,9 +49,7 @@ module.exports = app => {
           res: context.req.res
         });
 
-        return {
-          id: user.id
-        };
+        return user;
       } catch (e) {
         throw new AuthenticationError(e);
       }
@@ -61,15 +61,7 @@ module.exports = app => {
           args.user.email
         );
 
-        /**
-         *  @TODO: Authentication - Server
-         *
-         *  To verify the user has provided the correct password, we'll use the provided password
-         *  they submitted from the login form to decrypt the 'hashed' version stored in out database.
-         */
-        // Use bcrypt to compare the provided password to 'hashed' password stored in your database.
         const valid = await bcrypt.compare(args.user.password, user.password);
-        // -------------------------------
         if (!valid || !args.user) throw 'User was not found.';
 
         setCookie({
@@ -78,9 +70,7 @@ module.exports = app => {
           res: context.req.res
         });
 
-        return {
-          id: user.id
-        };
+        return user;
       } catch (e) {
         throw new AuthenticationError(e);
       }

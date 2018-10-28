@@ -1,22 +1,36 @@
-import React, { Fragment } from 'react';
-import { Redirect, Route, Switch, Router } from 'react-router';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router';
 import Items from '../pages/Items';
-import NavBar from '../components/NavBar';
-import Home from '../pages/Home';
-import Profile from '../pages/Profile';
-import Share from '../pages/Share';
+import Profile from '../../src/pages/Profile';
+import Share from '../../src/pages/Share';
+import NavBar from '../../src/components/NavBar';
+import Home from '../../src/pages/Home';
+
+import { ViewerContext } from '../context/ViewerProvider';
 
 export default () => (
-  <Fragment>
+  <React.Fragment>
     <NavBar />
-    <Switch>
-      <Route exact path="/items" component={Items} />
-      <Route exact path="/profile/:userid" component={Profile} />
-      <Route exact path="/share" component={Share} />
-      <Route exact path="/home" component={Home} />
-      <Redirect to="/home" />
-
-      <Route path="*" component={Items} />
-    </Switch>
-  </Fragment>
+    <ViewerContext.Consumer>
+      {({ viewer, loading }) => {
+        if (viewer) {
+          return (
+            <Switch>
+              <Route exact path="/items" component={Items} />
+              <Route exact path="/profile" component={Profile} />
+              <Route exact path="/profile/:userid" component={Profile} />
+              <Route exact path="/share" component={Share} />
+            </Switch>
+          );
+        } else {
+          return (
+            <Switch>
+              <Route exact path="/home" component={Home} />
+              <Redirect from="*" to="/home" />
+            </Switch>
+          );
+        }
+      }}
+    </ViewerContext.Consumer>
+  </React.Fragment>
 );

@@ -34,7 +34,7 @@ const Home = ({ classes }) => {
         <Typography gutterBottom variant="headline">
           Welcome home.
         </Typography>
-        <AccountForm />
+        <AccountForm hello />
       </Grid>
     </Grid>
   );
