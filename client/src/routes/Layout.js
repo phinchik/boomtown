@@ -20,6 +20,7 @@ export default () => (
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/profile/:userid" component={Profile} />
               <Route exact path="/share" component={Share} />
+              <Redirect to="/items" />
             </Switch>
           );
         } else {

@@ -40,15 +40,17 @@ export const ALL_ITEMS_QUERY = gql`
 `;
 
 export const ALL_USER_ITEMS_QUERY = gql`
-  query user($id: ID!) {
-    bio
-    email
-    fullname
-    items {
-      ...ItemFields
-    }
-    borrowed {
-      ...ItemFields
+  query user($filter: ID!) {
+    user(id: $filter) {
+      bio
+      email
+      fullname
+      items {
+        ...ItemFields
+      }
+      borrowed {
+        ...ItemFields
+      }
     }
   }
   ${ItemFields}
@@ -92,11 +94,11 @@ export const VIEWER_QUERY = gql`
     }
   }
 `;
-// export const LOGOUT_MUTATION = gql`
-//   mutation {
-//     # @TODO: Run the logout mutation.
-//   }
-// `;
+export const LOGOUT_MUTATION = gql`
+  mutation {
+    logout
+  }
+`;
 
 export const SIGNUP_MUTATION = gql`
   mutation user($user: NewUserInput!) {

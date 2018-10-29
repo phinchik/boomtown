@@ -3,7 +3,7 @@ const styles = {
     width: '100%'
   },
   card: {
-    height: '500px',
+    height: '550px',
     width: '100%',
     flexWrap: 'wrap',
     justifyContent: 'space-arround'
@@ -62,7 +62,11 @@ const styles = {
     backgroundColor: 'pink'
   },
   userTags: {
-    width: '90%'
+    width: '90%',
+    display: 'flex'
+  },
+  cardMedia: {
+    height: '200px'
   }
 };
 export default styles;

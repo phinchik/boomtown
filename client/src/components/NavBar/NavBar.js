@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import style from './styles';
+import styles from './styles';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,6 +14,8 @@ import Menu from '@material-ui/core/Menu';
 import Logo from '../../images/boomtown.svg';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/icons/AddCircle';
+import { LOGOUT_MUTATION, VIEWER_QUERY } from '../../apollo/queries';
+import { graphql, compose } from 'react-apollo';
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -97,8 +99,13 @@ class NavBar extends React.Component {
                     <MenuItem onClick={this.handleClose}>
                       <Link to="/profile/1">Profile</Link>
                     </MenuItem>
-                    <MenuItem onClick={this.handleClose}>
-                      <Link to="/home">Log Out</Link>
+                    <MenuItem
+                      onClick={() => {
+                        this.handleClose();
+                        this.props.logoutMutation();
+                      }}
+                    >
+                      Log Out
                     </MenuItem>
                   </Menu>
                 </div>
@@ -115,4 +122,17 @@ NavBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(style)(withRouter(NavBar));
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+];
+export default compose(
+  graphql(LOGOUT_MUTATION, {
+    options: {
+      refetchQueries
+    },
+    name: 'logoutMutation'
+  }),
+  withStyles(styles)
+)(withRouter(NavBar));

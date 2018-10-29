@@ -8,22 +8,14 @@ import styles from './styles';
 
 const Share = ({ classes, tags }) => {
   return (
-    <div className={classes.sharePage}>
-      <Grid
-        container
-        className={classes.root}
-        direction="row"
-        alignItems="center"
-        justify="center"
-      >
-        <Grid item xs={12} sm={12} md={6}>
-          <ShareItemPreview />
-        </Grid>
+    <div className={classes.root}>
+      <div>
+        <ShareItemPreview className={classes.shareItemPreview} />
+      </div>
 
-        <Grid item xs={12} sm={12} md={6} className={classes.sharePageItem1}>
-          <ShareItemForm tags={tags} />
-        </Grid>
-      </Grid>
+      <div className={classes.sharePageItem1}>
+        <ShareItemForm tags={tags} />
+      </div>
     </div>
   );
 };

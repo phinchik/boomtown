@@ -111,26 +111,7 @@ module.exports = postgres => {
       const tags = await postgres.query(tagsQuery);
       return tags.rows;
     },
-    async saveNewItem({ item, image, user }) {
-      /**
-       *  @TODO: Adding a New Item
-       *
-       *  Adding a new Item to Posgtres is the most advanced query.
-       *  It requires 3 separate INSERT statements.
-       *
-       *  All of the INSERT statements must:
-       *  1) Proceed in a specific order.
-       *  2) Succeed for the new Item to be considered added
-       *  3) If any of the INSERT queries fail, any successful INSERT
-       *     queries should be 'rolled back' to avoid 'orphan' data in the database.
-       *
-       *  To achieve #3 we'll ue something called a Postgres Transaction!
-       *  The code for the transaction has been provided for you, along with
-       *  helpful comments to help you get started.
-       *
-       *  Read the method and the comments carefully before you begin.
-       */
-
+    async saveNewItem({ item, user }) {
       return new Promise((resolve, reject) => {
         /**
          * Begin transaction by opening a long-lived connection
@@ -139,70 +120,81 @@ module.exports = postgres => {
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
-            client.query('BEGIN', err => {
+            client.query('BEGIN', async err => {
+              const { title, description, tags, id } = item;
+              const itemQuery = {
+                text:
+                  'INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3) RETURNING *',
+                values: [title, description, user.id]
+              };
+              const newItem = await client.query(itemQuery);
+              return newItem.rows;
+              // const tagsQuery = {
+              //   text:
+              //     'INSERT INTO itemtags (itemid, tagid) VALUES ($1, $2) RETURNING *',
+              //   values: [id, tags]
+              // };
+              // return tagsQuery.rows;
               // Convert image (file stream) to Base64
-              const imageStream = image.stream.pipe(strs('base64'));
+              // const imageStream = image.stream.pipe(strs('base64'));
 
-              let base64Str = '';
-              imageStream.on('data', data => {
-                base64Str += data;
-              });
+              // let base64Str = '';
+              // imageStream.on('data', data => {
+              //   base64Str += data;
+              // });
 
-              imageStream.on('end', async () => {
-                // Image has been converted, begin saving things
-                const { title, description, tags } = item;
+              // imageStream.on('end', async () => {
+              //   // Image has been converted, begin saving things
+              //   const { title, description, tags } = item;
 
-                // Generate new Item query
-                // @TODO
-                // -------------------------------
+              //   // Generate new Item query
+              // @TODO
+              // -------------------------------
 
-                // Insert new Item
-                // @TODO
-                // -------------------------------
+              // Insert new Item
+              // @TODO
+              // -------------------------------
 
-                const imageUploadQuery = {
-                  text:
-                    'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-                  values: [
-                    // itemid,
-                    image.filename,
-                    image.mimetype,
-                    'base64',
-                    base64Str
-                  ]
-                };
+              // const imageUploadQuery = {
+              //   text:
+              //     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+              //   values: [
+              //     // itemid,
+              //     image.filename,
+              //     image.mimetype,
+              //     'base64',
+              //     base64Str
+              //   ]
+              // };
 
-                // Upload image
-                const uploadedImage = await client.query(imageUploadQuery);
-                const imageid = uploadedImage.rows[0].id;
+              // Upload image
+              // const uploadedImage = await client.query(imageUploadQuery);
+              // const imageid = uploadedImage.rows[0].id;
 
-                // Generate image relation query
-                // @TODO
-                // -------------------------------
+              // Generate image relation query
+              // @TODO
+              // -------------------------------
 
-                // Insert image
-                // @TODO
-                // -------------------------------
+              // Insert image
+              // @TODO
+              // -------------------------------
 
-                // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-                // @TODO
-                // -------------------------------
+              // Generate tag relationships query (use the'tagsQueryString' helper function provided)
+              // @TODO
+              // -------------------------------
 
-                // Insert tags
-                // @TODO
-                // -------------------------------
+              // Insert tags
+              // @TODO
+              // -------------------------------
 
-                // Commit the entire transaction!
-                client.query('COMMIT', err => {
-                  if (err) {
-                    throw err;
-                  }
-                  // release the client back to the pool
-                  done();
-                  // Uncomment this resolve statement when you're ready!
-                  // resolve(newItem.rows[0])
-                  // -------------------------------
-                });
+              // Commit the entire transaction!
+              client.query('COMMIT', err => {
+                if (err) {
+                  throw err;
+                }
+                // release the client back to the pool
+                done();
+                resolve(newItem.rows[0]);
               });
             });
           } catch (e) {

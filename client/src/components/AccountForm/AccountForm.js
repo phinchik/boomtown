@@ -28,42 +28,45 @@ class AccountForm extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, loginMutation, signupMutation } = this.props;
+    // <Form validate={validate.bind(this)}
 
     return (
       <Form
-        onSubmit={values => {
-          const user = { variables: { user: values } };
-          this.state.formToggle
-            ? this.props
-                .loginMutation(user)
-                .catch(error => this.setState({ error }))
-            : this.props
-                .signupMutation(user)
-                .catch(error => this.setState({ error }));
-        }}
         validate={validate.bind(this)}
-        render={({ handleSubmit, pristine, invalid, submitting, form }) => (
+        onSubmit={values => {
+          this.state.formToggle
+            ? loginMutation({
+                variables: {
+                  user: {
+                    email: values.email,
+                    password: values.password
+                  }
+                }
+              })
+            : signupMutation({ variables: { user: values } });
+        }}
+        render={({ handleSubmit, pristine, invalid }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
                 <InputLabel htmlFor="fullname">Username</InputLabel>
-                <Field
-                  render={(input, meta) => (
+                <Field name="fullname">
+                  {({ input, meta }) => (
                     <Input
                       id="fullname"
                       type="text"
                       inputProps={{ autoComplete: 'off' }}
-                      value={''}
+                      {...input}
                     />
                   )}
-                />
+                </Field>
               </FormControl>
             )}
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel htmlFor="email">Email</InputLabel>
-              <Field
-                render={(input, meta) => (
+              <Field name="email">
+                {({ input, meta }) => (
                   <Input
                     id="email"
                     type="text"
@@ -71,12 +74,12 @@ class AccountForm extends Component {
                     {...input}
                   />
                 )}
-              />
+              </Field>
             </FormControl>
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel htmlFor="password">Password</InputLabel>
-              <Field
-                render={(input, meta) => (
+              <Field name="password">
+                {({ input, meta }) => (
                   <Input
                     id="password"
                     type="password"
@@ -84,7 +87,7 @@ class AccountForm extends Component {
                     {...input}
                   />
                 )}
-              />
+              </Field>
             </FormControl>
             <FormControl className={classes.formControl}>
               <Grid
@@ -95,6 +98,7 @@ class AccountForm extends Component {
               >
                 <Button
                   type="submit"
+                  id="submit"
                   className={classes.formButton}
                   variant="contained"
                   size="large"
@@ -103,7 +107,6 @@ class AccountForm extends Component {
                     false
                     // @TODO: This prop should depend on pristine or valid state of form
                   }
-                  onClick={() => console.log('form', form.submitting)}
                 >
                   {this.state.formToggle ? 'Enter' : 'Create Account'}
                 </Button>
@@ -124,7 +127,12 @@ class AccountForm extends Component {
               </Grid>
             </FormControl>
             <Typography className={classes.errorMessage}>
-              {/* @TODO: Display sign-up and login errors */}
+              {loginMutation.error
+                ? 'User Authentication Error: Incorrect Username or Password'
+                : ''}
+              {signupMutation.error
+                ? 'Error: Invalid Username or Password'
+                : ''}
             </Typography>
           </form>
         )}
@@ -141,7 +149,10 @@ const refetchQueries = [
 
 export default compose(
   graphql(SIGNUP_MUTATION, {
-    name: 'signupMutation'
+    name: 'signupMutation',
+    options: {
+      refetchQueries
+    }
   }),
   graphql(LOGIN_MUTATION, {
     options: {

@@ -4,51 +4,66 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import styles from './styles';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+import Gravatar from 'react-gravatar';
+import { ViewerContext } from '../../context/ViewerProvider';
+import moment from 'moment';
 
 const CardForm = ({ classes, item }) => {
-  console.log('carddata>>>>>>>', item);
   return (
-    <div className={classes.root}>
-      <Card className={classes.card}>
-        <CardMedia component="img" src={item.imageurl} />
-        <CardContent className={classes.cardContent}>
-          <Typography gutterBottom variant="display3" component="h2">
-            <div className={classes.row}>
-              <Avatar
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCZpwfJpyfqP1GtKOEuBVsLJ_yE-bP7lt91ClEjGppog3ylzoZpQ"
-                alt="Boomtown Logo"
-                className={classes.avatar}
+    <ViewerContext.Consumer>
+      {({ loading, viewer, error }) => {
+        return (
+          <div className={classes.root}>
+            <Card className={classes.card}>
+              <CardMedia
+                className={classes.cardMedia}
+                component="img"
+                src={item.imageurl}
+                title="item's picture"
               />
-              <div className={classes.userContainer}>
-                <p className={classes.user}>PHINCHIK</p>
 
-                {/* <span className={classes.timeCard}>{item.date}</span> */}
-              </div>
-            </div>
-          </Typography>
+              <Link to={`/profile/${item.owner.id}`}>
+                <CardHeader
+                  avatar={
+                    <Gravatar
+                      className={classes.avatar}
+                      email={item.owner.email || viewer.email}
+                    />
+                  }
+                  title={item.owner.fullname || viewer.fullname}
+                  subheader={moment(new Date(item.timedate)).fromNow()}
+                />
+              </Link>
 
-          <Typography className={classes.userInput}>{item.title}</Typography>
-          <Typography className={classes.userTags}>
-            {item.tags.map(tag => <p>{tag.title}</p>)}
-          </Typography>
-          <Typography className={classes.DescribeInput}>
-            {item.description}
-          </Typography>
-          <Button
-            className={classes.button}
-            id="sharesubmit"
-            type="submit"
-            variant="contained"
-          >
-            BORROW
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+              <CardContent className={classes.cardContent}>
+                <Typography className={classes.userInput}>
+                  {item.title}
+                </Typography>
+                <Typography className={classes.userTags}>
+                  {item.tags.map(tag => tag.title).join(', ')}
+                </Typography>
+                <Typography className={classes.DescribeInput}>
+                  {item.description}
+                </Typography>
+                <Button
+                  className={classes.button}
+                  id="sharesubmit"
+                  type="submit"
+                  variant="contained"
+                >
+                  BORROW
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        );
+      }}
+    </ViewerContext.Consumer>
   );
 };
 

@@ -1,10 +1,10 @@
 const styles = theme => ({
   sharePage: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
     margin: '50px 50px',
     width: '80wv',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    backgroundColor: 'gray'
   },
 
   sharePageItem1: {
@@ -14,6 +14,14 @@ const styles = theme => ({
     backgroundColor: 'red',
     width: '400px',
     margin: '0 auto'
+  },
+  shareItemPreview: {
+    paddingRight: '50px'
+  },
+  root: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    margin: '50px auto'
   }
 });
 

@@ -84,7 +84,6 @@ class ShareItemForm extends Component {
 
   render() {
     const { classes, tags, updateNewItem } = this.props;
-    console.log('TAGSSSSS', tags.tags);
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h1" className={classes.heading}>

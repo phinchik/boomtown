@@ -1,25 +1,19 @@
 const styles = theme => ({
-  root: {
-    backgroundColor: 'gray',
-    width: '100%',
-    height: '100%',
-    paddingTop: '10px'
-  },
-  div: {
-    width: '80%',
-    margin: '0 auto'
-  },
-  card: {
-    height: '230px',
+  cardForm: {
     display: 'flex',
-    marginTop: '20px'
+    alignItems: 'center',
+    margin: '60px auto',
+    width: '95vw',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around'
   },
-  media: {
-    backgroundColor: 'pink',
-    paddingTop: '30px'
+
+  card: {
+    justifyContent: 'space-around',
+    width: '30%'
   },
-  avatar: {
-    backgroundColor: 'yellow'
+  profileCard: {
+    backgroundColor: '#212121'
   }
 });
 

@@ -50,6 +50,7 @@ module.exports = app => {
         // return pgResource.getItems(user.id);
         try {
           const items = await pgResource.getItems(user.id);
+          console.log('items >>>>>>', items);
           return items;
         } catch (e) {
           throw new ApolloError(e);
@@ -108,12 +109,11 @@ module.exports = app => {
       // -------------------------------
 
       async addItem(parent, args, context, info) {
-        image = await image;
-        const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
+        console.log('>>>>>', args.user);
+        // const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
         const newItem = await context.pgResource.saveNewItem({
           item: args.item,
-          image: args.image,
-          user
+          user: args.user
         });
         return newItem;
       }
