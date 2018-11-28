@@ -22,7 +22,7 @@ const Share = ({ classes, tags }) => {
 
 Share.propTypes = {
   classes: PropTypes.object.isRequired,
-  tags: PropTypes.array.isRequired
+  tags: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Share);

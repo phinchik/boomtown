@@ -21,7 +21,6 @@ const ProfileCard = ({ classes, data, items }) => {
                 alt="Boomtown Logo"
                 className={classes.avatar}
               />
-              <div className={classes.userContainer} />
               <Typography className={classes.fullname}>
                 {data.user.fullname}
               </Typography>
@@ -29,15 +28,15 @@ const ProfileCard = ({ classes, data, items }) => {
           </Typography>
           {/* <Typography>{moment(new Date(data.user.date)).fromNow()}</Typography> */}
           <div className={classes.shareItems}>
-            <Typography style={{ marginRight: '5px' }}>
+            <Typography className={classes.sharedText}>
               SHARED ITEMS {items.length}
             </Typography>
-            <Typography className={classes.borrowed}>
+            <Typography className={classes.borrowedText}>
               BORROWED ITEMS {data.user.borrowed.length}
             </Typography>
           </div>
 
-          <Typography>BIO {data.user.bio}</Typography>
+          <Typography className={classes.bio}>BIO {data.user.bio}</Typography>
         </CardContent>
       </Card>
     </div>

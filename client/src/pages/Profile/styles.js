@@ -13,7 +13,8 @@ const styles = theme => ({
     width: '30%'
   },
   profileCard: {
-    backgroundColor: '#212121'
+    backgroundColor: '#212121',
+    height: '100%'
   }
 });
 

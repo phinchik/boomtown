@@ -11,28 +11,39 @@ const styles = theme => ({
     height: '250px'
   },
   avatar: {
-    width: '50px',
-    height: '50px',
+    width: '70px',
+    height: '70px',
     marginLeft: '20px',
     marginTop: '30px'
   },
   fullname: {
     height: '50px',
     width: '200px',
-    fontSize: '40px',
-    marginLeft: '90px',
-    position: 'relative',
-    bottom: '50px'
+    fontSize: '50px',
+    marginLeft: '20px',
+    color: 'rgba(0, 0, 0, 0.54)',
+    marginTop: '30px'
   },
   shareItems: {
-    position: 'relative',
-    bottom: '30px',
-    fontSize: '30px'
+    display: 'flex'
   },
-  borrowed: {
-    position: 'relative',
-    left: '250px',
-    bottom: '43px'
+  borrowedText: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: '1.3125rem',
+    fontWeight: '500'
+  },
+  sharedText: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: '1.3125rem',
+    fontWeight: '500',
+    marginRight: '20px'
+  },
+  media: {
+    display: 'flex'
+  },
+  bio: {
+    fontSize: '20px',
+    fontWeight: '200'
   }
 });
 export default styles;
