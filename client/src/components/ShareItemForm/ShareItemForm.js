@@ -76,17 +76,15 @@ class ShareItemForm extends Component {
     this.setState({ fileSelected: this.fileInput.current.files[0] });
   }
 
-  // submitTheForm(form) {
-  //   console.log('submitting!', form.getState().values);
-  //   // Fire mutation with form values
-  //   !form.invalid && form.reset();
-  // }
-
   render() {
     const { classes, tags, updateNewItem } = this.props;
     return (
       <div className={classes.root}>
-        <Typography component="h1" variant="h1" className={classes.heading}>
+        <Typography
+          component="h1"
+          variant="display1"
+          className={classes.heading}
+        >
           Share. Borrow.<br /> Prosper.
         </Typography>
         <Form
@@ -115,8 +113,15 @@ class ShareItemForm extends Component {
                         </Typography>
                       </Button>
                     ) : (
-                      <Button onClick={() => this.resetFileInput()}>
-                        <Typography>RESET IMAGE</Typography>
+                      <Button
+                        onClick={() => {
+                          this.setState({ fileSelected: '' });
+                          this.props.resetNewItemImage();
+                        }}
+                      >
+                        <Typography className={classes.selectImage}>
+                          RESET IMAGE
+                        </Typography>
                       </Button>
                     )}
                     <input
@@ -131,13 +136,6 @@ class ShareItemForm extends Component {
               />
               <FormControl fullWidth className={this.props.classes.formControl}>
                 <fieldset className={this.props.classes.fieldset}>
-                  {/* <Button
-                    variant="contained"
-                    color="primary"
-                    className={this.props.classes.button}
-                  >
-                    Select an Image
-                  </Button> */}
                   <Field
                     name="title"
                     render={({ input, meta }) => (
@@ -196,7 +194,7 @@ class ShareItemForm extends Component {
                 type="submit"
                 variant="contained"
                 color="primary"
-                disabled={pristine || invalid}
+                // disabled={pristine || invalid}
                 style={{ marginLeft: '20px' }}
               >
                 SHARE
@@ -220,6 +218,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(resetNewItemImage());
   }
 });
+
+// const mapStateToProps = state => {
+//   return {
+//     date: state.shareItemPreview.date,
+//     description: state.shareItemPreview.description,
+//     imageurl: state.shareItemPreview.imageurl,
+//     owner: state.shareItemPreview.owner,
+//     tags: state.shareItemPreview.tags,
+//     title: state.shareItemPreview.title
+//   };
+// };
 
 export default connect(
   null,

@@ -6,9 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import styles from './styles';
 import BoomtownLogo from '../../images/boomtown.svg';
-import moment from 'moment';
+import PropTypes from 'prop-types';
+// import moment from 'moment';
 
-const ProfileCard = ({ classes, data }) => {
+const ProfileCard = ({ classes, data, items }) => {
   return (
     <div className={classes.div}>
       <Card className={classes.card}>
@@ -26,23 +27,26 @@ const ProfileCard = ({ classes, data }) => {
               </Typography>
             </div>
           </Typography>
-          {/* <Typography>
-              {moment(new Date(data.user.date)).fromNow()}
-            </Typography> */}
-          <Typography className={classes.shareItems}>
-            <div style={{ marginRight: '5px' }}>
-              SHARED ITEMS {data.user.items.length}
-            </div>
-            <div className={classes.borrowed}>
+          {/* <Typography>{moment(new Date(data.user.date)).fromNow()}</Typography> */}
+          <div className={classes.shareItems}>
+            <Typography style={{ marginRight: '5px' }}>
+              SHARED ITEMS {items.length}
+            </Typography>
+            <Typography className={classes.borrowed}>
               BORROWED ITEMS {data.user.borrowed.length}
-            </div>
-          </Typography>
+            </Typography>
+          </div>
 
           <Typography>BIO {data.user.bio}</Typography>
         </CardContent>
       </Card>
     </div>
   );
+};
+
+ProfileCard.propTypes = {
+  classes: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(ProfileCard);

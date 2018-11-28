@@ -48,6 +48,7 @@ class NavBar extends React.Component {
         <div className={classes.root}>
           <AppBar position="static">
             <Toolbar
+              variant="regular"
               style={{
                 margin: '5px',
                 display: 'flex',
@@ -67,7 +68,7 @@ class NavBar extends React.Component {
                 />
               </a>
               <Typography
-                variant="h6"
+                variant="display3"
                 color="inherit"
                 className={this.props.classes.grow}
               />
@@ -76,7 +77,7 @@ class NavBar extends React.Component {
                 <div>
                   <Button className={classes.shareButton}>
                     <Link to="/share" className={classes.icon}>
-                      <Icon style={{ paddingTop: '5px' }} /> SHARE SOMETHING
+                      <Icon style={styles.icon} /> SHARE SOMETHING
                     </Link>
                   </Button>
 
@@ -119,7 +120,8 @@ class NavBar extends React.Component {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 const refetchQueries = [

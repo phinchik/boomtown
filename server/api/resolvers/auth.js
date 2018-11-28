@@ -45,18 +45,13 @@ module.exports = app => {
     },
 
     async login(parent, args, context) {
-      console.log('ARGS >>>>>>>>>>>>>', args);
       try {
         const user = await context.pgResource.getUserAndPasswordForVerification(
           args.user.email
         );
 
-        console.log('user >>>>>', user);
-
         const valid = await bcrypt.compare(args.user.password, user.password);
 
-        console.log('VALID ??????', valid);
-        console;
         if (!valid || !args.user) throw 'User was not found.';
 
         setCookie({

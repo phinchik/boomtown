@@ -19,6 +19,7 @@ const ItemFields = gql`
     }
     owner {
       id
+      fullname
     }
   }
 `;

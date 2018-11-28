@@ -2,6 +2,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
 // import { Redirect } from 'react-router-dom'
 
@@ -38,6 +39,10 @@ const Home = ({ classes }) => {
       </Grid>
     </Grid>
   );
+};
+
+Home.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Home);

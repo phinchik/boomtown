@@ -15,7 +15,7 @@ class ItemsContainer extends Component {
                 if (loading) return 'loading';
                 if (error) return `${error}`;
                 if (data) {
-                  return <Items viewer={viewer} data={data} />;
+                  return <Items key={viewer.id} viewer={viewer} data={data} />;
                 }
               }}
             </Query>

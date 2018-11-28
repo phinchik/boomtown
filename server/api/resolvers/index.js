@@ -93,7 +93,6 @@ module.exports = app => {
           throw new ApolloError(e);
         }
       }
-      // -------------------------------
     },
     // async imageurl({ imageurl, imageid, mimetype, data }) {
     //   if (imageurl) return imageurl;
@@ -101,15 +100,11 @@ module.exports = app => {
     //     return `data:${mimetype};base64, ${data}`;
     //   }
     // },
-    // -------------------------------
+
     Mutation: {
-      //don't touch!!
-      // @TODO: Uncomment this later when we add auth
       ...authMutations(app),
-      // -------------------------------
 
       async addItem(parent, args, context, info) {
-        console.log('>>>>>', args.user);
         // const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
         const newItem = await context.pgResource.saveNewItem({
           item: args.item,

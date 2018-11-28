@@ -16,7 +16,7 @@ import moment from 'moment';
 const CardForm = ({ classes, item }) => {
   return (
     <ViewerContext.Consumer>
-      {({ loading, viewer, error }) => {
+      {({ viewer }) => {
         return (
           <div className={classes.root}>
             <Card className={classes.card}>
@@ -27,7 +27,7 @@ const CardForm = ({ classes, item }) => {
                 title="item's picture"
               />
 
-              <Link to={`/profile/${item.owner.id}`}>
+              <Link to={'`/profile/${item.owner.id}`'}>
                 <CardHeader
                   avatar={
                     <Gravatar
@@ -68,7 +68,8 @@ const CardForm = ({ classes, item }) => {
 };
 
 CardForm.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(CardForm);

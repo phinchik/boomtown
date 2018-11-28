@@ -61,6 +61,7 @@ module.exports = gql`
     title: String!
     description: String
     tags: [AssignedTag]!
+    imageurl: String
   }
 
   input NewUserInput {
