@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 const ShareItemPreview = ({ shareItemPreview }) => {
   return <CardForm item={shareItemPreview} />;
 };
-const mapStateToProps = state => ({
-  shareItemPreview: state.shareItemPreview
-});
+const mapStateToProps = state => {
+  console.log('state >>>>>', state);
+  return { shareItemPreview: state.shareItemPreview };
+};
 
 export default connect(mapStateToProps)(ShareItemPreview);

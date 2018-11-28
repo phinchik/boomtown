@@ -79,11 +79,13 @@ module.exports = gql`
     user(id: ID!): User
     viewer: User
     items(filter: ID): [Item]
+    item(id: ID): Item
     tags: [Tag]
   }
 
   type Mutation {
     addItem(item: NewItemInput!): Item
+    borrowItem(item: ID!, user: ID!): Boolean!
     signup(user: NewUserInput!): User
     login(user: logIn!): User
     logout: Boolean

@@ -1,11 +1,6 @@
 const strs = require('stringstream');
 
 function tagsQueryString(tags, itemid, result) {
-  /**
-   * Challenge:
-   * This function is recursive, and a little complicated.
-   * Can you refactor it to be simpler / more readable?
-   */
   const length = tags.length;
   return length === 0
     ? `${result};`
@@ -78,6 +73,12 @@ module.exports = postgres => {
         throw error;
       }
     },
+    async getItem(id) {
+      return postgres.query({
+        text: `SELECT * FROM items WHERE items.id = $1 `,
+        values: [id]
+      });
+    },
     async getItemsForUser(id) {
       const items = await postgres.query({
         text: `SELECT *
@@ -111,90 +112,63 @@ module.exports = postgres => {
       const tags = await postgres.query(tagsQuery);
       return tags.rows;
     },
-    async saveNewItem({ item, user }) {
+    async saveNewItem({ item, image, user }) {
+      console.log('item', item);
+      console.log('user', user);
       return new Promise((resolve, reject) => {
-        /**
-         * Begin transaction by opening a long-lived connection
-         * to a client from the client pool.
-         */
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
             client.query('BEGIN', async err => {
-              const { title, description, tags, id } = item;
-              const itemQuery = {
-                text:
-                  'INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3) RETURNING *',
-                values: [title, description, user.id]
-              };
-              const newItem = await client.query(itemQuery);
-              return newItem.rows;
-              // const tagsQuery = {
-              //   text:
-              //     'INSERT INTO itemtags (itemid, tagid) VALUES ($1, $2) RETURNING *',
-              //   values: [id, tags]
-              // };
-              // return tagsQuery.rows;
-              // Convert image (file stream) to Base64
-              // const imageStream = image.stream.pipe(strs('base64'));
+              const imageStream = image.stream.pipe(strs('base64'));
 
-              // let base64Str = '';
-              // imageStream.on('data', data => {
-              //   base64Str += data;
-              // });
+              let base64Str = '';
+              imageStream.on('data', data => {
+                base64Str += data;
+              });
 
-              // imageStream.on('end', async () => {
-              //   // Image has been converted, begin saving things
-              //   const { title, description, tags } = item;
+              imageStream.on('end', async () => {
+                const { title, description, tags } = item;
+                const itemQuery = {
+                  text:
+                    'INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3) RETURNING *',
+                  values: [title, description, user.id]
+                };
 
-              //   // Generate new Item query
-              // @TODO
-              // -------------------------------
+                const newItem = await client.query(itemQuery);
 
-              // Insert new Item
-              // @TODO
-              // -------------------------------
+                const imageUploadQuery = {
+                  text:
+                    'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                  values: [
+                    // itemid,
+                    image.filename,
+                    image.mimetype,
+                    'base64',
+                    base64Str
+                  ]
+                };
+                const uploadedImage = await client.query(imageUploadQuery);
+                const imageid = uploadedImage.rows[0].id;
 
-              // const imageUploadQuery = {
-              //   text:
-              //     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-              //   values: [
-              //     // itemid,
-              //     image.filename,
-              //     image.mimetype,
-              //     'base64',
-              //     base64Str
-              //   ]
-              // };
+                const tagIds = tags.map(tag => parseInt(tag));
 
-              // Upload image
-              // const uploadedImage = await client.query(imageUploadQuery);
-              // const imageid = uploadedImage.rows[0].id;
+                const tagItemPair = tagsQueryString(tagIds, newItem.row[0].id);
+                const tagRelationships = {
+                  text: `INSERT INTO itemtags (tagid, itemid) VALUES ${tagItemPair}`,
+                  values: [...tags]
+                };
+                await client.query(tagRelationships);
 
-              // Generate image relation query
-              // @TODO
-              // -------------------------------
-
-              // Insert image
-              // @TODO
-              // -------------------------------
-
-              // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-              // @TODO
-              // -------------------------------
-
-              // Insert tags
-              // @TODO
-              // -------------------------------
-
-              // Commit the entire transaction!
-              client.query('COMMIT', err => {
-                if (err) {
-                  throw err;
-                }
-                // release the client back to the pool
-                done();
-                resolve(newItem.rows[0]);
+                // Commit the entire transaction!
+                client.query('COMMIT', err => {
+                  if (err) {
+                    throw err;
+                  }
+                  // release the client back to the pool
+                  done();
+                  resolve(newItem.rows[0]);
+                });
               });
             });
           } catch (e) {

@@ -46,27 +46,31 @@ class NavBar extends React.Component {
     return (
       location.pathname !== '/home' && (
         <div className={classes.root}>
-          <AppBar position="static">
+          <AppBar
+            position="static"
+            style={{ display: 'flex', position: 'relative', height: '60px' }}
+          >
             <Toolbar
               variant="regular"
               style={{
-                margin: '5px',
+                margin: '10px',
                 display: 'flex',
                 justifyContent: 'space-between'
               }}
             >
-              <a href="/client/src/pages/Items/index.js">
+              <Link to="/items" href="/client/src/pages/Items/index.js">
                 <img
                   src={Logo}
                   alt="Boomtown Logo"
                   style={{
                     height: '50px',
-                    width: '50px',
-                    padding: '0px',
-                    marginRight: '0px'
+                    width: 'auto',
+                    position: 'relative',
+                    bottom: '10px',
+                    right: '25px'
                   }}
                 />
-              </a>
+              </Link>
               <Typography
                 variant="display3"
                 color="inherit"
@@ -74,12 +78,16 @@ class NavBar extends React.Component {
               />
 
               {auth && (
-                <div>
-                  <Button className={classes.shareButton}>
-                    <Link to="/share" className={classes.icon}>
-                      <Icon style={styles.icon} /> SHARE SOMETHING
-                    </Link>
-                  </Button>
+                <div style={{ display: 'flex' }}>
+                  <Link
+                    to="/share"
+                    style={{ position: 'relative', bottom: '10px' }}
+                  >
+                    <Button to="/share">
+                      <Icon style={{ margin: '10px' }} />
+                      SHARE SOMETHING
+                    </Button>
+                  </Link>
 
                   <IconButton
                     aria-owns={open ? 'menu-appbar' : null}

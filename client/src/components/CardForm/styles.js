@@ -66,7 +66,7 @@ const styles = {
     display: 'flex'
   },
   cardMedia: {
-    height: '200px'
+    height: '250px'
   }
 };
 export default styles;

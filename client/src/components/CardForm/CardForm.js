@@ -24,7 +24,6 @@ const CardForm = ({ classes, item }) => {
                 className={classes.cardMedia}
                 component="img"
                 src={item.imageurl}
-                title="item's picture"
               />
 
               <Link to={'`/profile/${item.owner.id}`'}>
