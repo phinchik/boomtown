@@ -11,8 +11,6 @@ import client from './apollo';
 
 import store from './redux';
 
-// import Items from './pages/Items';
-// -------------------------------
 import ViewerProvider from './context/ViewerProvider';
 
 import './index.css';

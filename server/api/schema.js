@@ -61,13 +61,13 @@ module.exports = gql`
     title: String!
     description: String
     tags: [AssignedTag]!
-    imageurl: String
   }
 
   input NewUserInput {
     fullname: String!
     email: String!
     password: String!
+    bio: String
   }
 
   input logIn {

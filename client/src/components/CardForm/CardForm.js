@@ -23,7 +23,12 @@ const CardForm = ({ classes, item }) => {
               <CardMedia
                 className={classes.cardMedia}
                 component="img"
-                src={item.imageurl}
+                src={
+                  item.imageurl
+                    ? item.imageurl
+                    : 'http://wiki.tripwireinteractive.com/images/4/47/Placeholder.png'
+                }
+                title="Item's Picture"
               />
 
               <Link to={'`/profile/${item.owner.id}`'}>

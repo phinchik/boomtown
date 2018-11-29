@@ -43,28 +43,27 @@ module.exports = app => {
       },
       async tags(parent, { title }, { pgResource }, info) {
         try {
-          const tags = await pgResource.getTags();
+          const tags = await pgResource.getTags(title);
           return tags;
         } catch (e) {
           throw new ApolloError(e);
         }
-        // -------------------------------
       }
     },
     User: {
-      items(user, _, { pgResource }) {
-        // @TODO: Replace this mock return statement with the correct items from Postgres
-        // return pgResource.getItems(user.id);
+      async items(user, _, { pgResource }) {
         try {
-          const items = pgResource.getItemsForUser(user.id);
+          const items = await pgResource.getItemsForUser(user.id);
           return items;
         } catch (e) {
           throw new ApolloError(e);
         }
       },
-      borrowed(user, _, { pgResource }) {
+      async borrowed(user, _, { pgResource }) {
         try {
-          const userBorrowedItems = pgResource.getBorrowedItemsForUser(user.id);
+          const userBorrowedItems = await pgResource.getBorrowedItemsForUser(
+            user.id
+          );
           return userBorrowedItems;
         } catch (e) {
           throw new ApolloError(e);
@@ -108,13 +107,13 @@ module.exports = app => {
       ...authMutations(app),
 
       async addItem(parent, args, context, info) {
-        image = await image;
+        image = await args.item.image;
         const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
         const newItem = await context.pgResource.saveNewItem({
           item: args.item,
-          user: user,
-          tags: args.item.tags,
-          image: args.image
+          image,
+          user
+          // tags: args.item.tags,
         });
         return newItem;
       },

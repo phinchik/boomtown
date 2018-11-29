@@ -14,11 +14,11 @@ function tagsQueryString(tags, itemid, result) {
 
 module.exports = postgres => {
   return {
-    async createUser({ fullname, email, password }) {
+    async createUser({ fullname, email, bio, password }) {
       const newUserInsert = {
         text:
-          'INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3) RETURNING *',
-        values: [fullname, email, password]
+          'INSERT INTO users (fullname, email, bio, password) VALUES ($1, $2, $3, $4) RETURNING *',
+        values: [fullname, email, bio, password]
       };
       try {
         const user = await postgres.query(newUserInsert);
@@ -38,7 +38,7 @@ module.exports = postgres => {
       const findUserQuery = {
         text: `SELECT * FROM users WHERE users.email = $1`,
         values: [email]
-      }; // @TODO: Authentication - Server
+      };
       try {
         const user = await postgres.query(findUserQuery);
         if (!user) throw 'User was not found.';
@@ -49,7 +49,7 @@ module.exports = postgres => {
     },
     async getUserById(id) {
       const findUserQuery = {
-        text: `SELECT * FROM users WHERE users.id = $1`,
+        text: `SELECT id, email, fullname, bio FROM users WHERE users.id = $1`,
         values: [id]
       };
 
@@ -113,14 +113,11 @@ module.exports = postgres => {
       return tags.rows;
     },
     async saveNewItem({ item, image, user }) {
-      console.log('item', item);
-      console.log('user', user);
       return new Promise((resolve, reject) => {
         postgres.connect((err, client, done) => {
           try {
-            // Begin postgres transaction
             client.query('BEGIN', async err => {
-              const imageStream = image.stream.pipe(strs('base64'));
+              const imageStream = imageurl.stream.pipe(strs('base64'));
 
               let base64Str = '';
               imageStream.on('data', data => {
@@ -129,55 +126,55 @@ module.exports = postgres => {
 
               imageStream.on('end', async () => {
                 const { title, description, tags } = item;
+
                 const itemQuery = {
                   text:
                     'INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3) RETURNING *',
                   values: [title, description, user.id]
                 };
-
                 const newItem = await client.query(itemQuery);
+
+                const itemId = newItem.rows[0].id;
 
                 const imageUploadQuery = {
                   text:
                     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
                   values: [
-                    // itemid,
+                    itemid,
                     image.filename,
                     image.mimetype,
                     'base64',
                     base64Str
                   ]
                 };
-                const uploadedImage = await client.query(imageUploadQuery);
-                const imageid = uploadedImage.rows[0].id;
 
-                const tagIds = tags.map(tag => parseInt(tag));
+                await client.query(imageUploadQuery);
 
-                const tagItemPair = tagsQueryString(tagIds, newItem.row[0].id);
-                const tagRelationships = {
-                  text: `INSERT INTO itemtags (tagid, itemid) VALUES ${tagItemPair}`,
-                  values: [...tags]
+                const tagsQuery = {
+                  text: `INSERT INTO itemtags (tagsid, itemid) VALUES ${tagsQueryString(
+                    [...tags],
+                    itemId,
+                    ''
+                  )}`,
+                  values: tags.map(tag => tag.id)
                 };
-                await client.query(tagRelationships);
 
-                // Commit the entire transaction!
+                await client.query(tagsQuery);
+
                 client.query('COMMIT', err => {
                   if (err) {
                     throw err;
                   }
-                  // release the client back to the pool
                   done();
                   resolve(newItem.rows[0]);
                 });
               });
             });
           } catch (e) {
-            // Something went wrong
             client.query('ROLLBACK', err => {
               if (err) {
                 throw err;
               }
-              // release the client back to the pool
               done();
             });
             switch (true) {

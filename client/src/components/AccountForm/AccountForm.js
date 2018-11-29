@@ -29,7 +29,6 @@ class AccountForm extends Component {
 
   render() {
     const { classes, loginMutation, signupMutation } = this.props;
-    // <Form validate={validate.bind(this)}
 
     return (
       <Form
@@ -103,10 +102,7 @@ class AccountForm extends Component {
                   variant="contained"
                   size="large"
                   color="secondary"
-                  disabled={
-                    false
-                    // @TODO: This prop should depend on pristine or valid state of form
-                  }
+                  disabled={false}
                 >
                   {this.state.formToggle ? 'Enter' : 'Create Account'}
                 </Button>
@@ -115,7 +111,6 @@ class AccountForm extends Component {
                     className={classes.formToggle}
                     type="button"
                     onClick={() => {
-                      // @TODO: Reset the form on submit
                       this.setState({ formToggle: !this.state.formToggle });
                     }}
                   >

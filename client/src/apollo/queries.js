@@ -75,11 +75,22 @@ export const ADD_USER_MUTATION = gql`
   }
 `;
 
+// id
+// title
+// description
+// owner --> { id: email: fullname: }
+
 export const ADD_ITEM_MUTATION = gql`
-  mutation addItem($NewItemInput: NewItemInput!) {
-    addItem(item: $NewItemInput) {
+  mutation addItem($item: NewItemInput!) {
+    addItem(item: $item) {
+      imageurl
+      id
       title
       description
+      tags {
+        title
+        id
+      }
     }
   }
 `;

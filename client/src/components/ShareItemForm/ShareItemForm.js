@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { Form, Field, FormSpy } from 'react-final-form';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import validate from './helpers/validation';
 import styles from './styles';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import CheckBox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
+import { ADD_ITEM_MUTATION } from '../../apollo/queries';
 import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
+import { VIEWER_QUERY } from '../../apollo/queries';
+import { compose } from 'redux';
+import { graphql } from 'react-apollo';
 import {
   updateNewItem,
   resetNewItem,
@@ -77,12 +79,31 @@ class ShareItemForm extends Component {
     this.setState({ fileSelected: this.fileInput.current.files[0] });
   }
 
-  submitForm(form) {
-    console.log('submitting!', form.getState().values);
-    // Fire mutation with form values
+  saveItem(values, addItemMutation, tags) {
+    const {
+      validity,
+      files: [file]
+    } = this.fileInput.current;
+    if (!validity.valid || !file) return;
+    try {
+      const itemData = {
+        title: values.title,
+        description: values.description,
+        tags: this.applyTags(tags)
+      };
+      addItemMutation({
+        variables: {
+          item: itemData,
+          image: file
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
   }
+
   render() {
-    const { classes, tags, updateNewItem } = this.props;
+    const { classes, tags, updateNewItem, addItemMutation } = this.props;
     return (
       <div className={classes.root}>
         <Typography
@@ -92,16 +113,14 @@ class ShareItemForm extends Component {
         >
           Share. Borrow.<br /> Prosper.
         </Typography>
-        <Form
-          // validate={values => validate(values)}
-          onSubmit={(e, form) => this.submitForm(form)}
+        <Form // validate={values => validate(values)}
+          onSubmit={values => this.saveItem(values, addItemMutation, tags)}
           render={({ handleSubmit, invalid, pristine }) => (
-            <form onSubmit={e => handleSubmit(e)}>
+            <form onSubmit={handleSubmit}>
               <FormSpy
                 subscription={{ values: true }}
                 component={({ values }) => {
                   // if (values) {
-                  console.log(values);
                   this.dispatchUpdate(values, tags, updateNewItem);
                   // }
                   return '';
@@ -196,11 +215,12 @@ class ShareItemForm extends Component {
               </fieldset>
 
               <Button
-                id="submit"
                 type="submit"
                 variant="contained"
-                color="primary" // disabled={pristine || invalid}
-                style={{ marginLeft: '20px' }}
+                color="primary"
+                style={
+                  { marginLeft: '20px' } // disabled={pristine || invalid}
+                }
               >
                 SHARE
               </Button>
@@ -224,19 +244,25 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+];
+
 const mapStateToProps = state => {
-  console.log('STATE FROM FORM>>>>', state);
-  return {
-    // date: state.shareItemPreview.date,
-    // description: state.shareItemPreview.description,
-    // imageurl: state.shareItemPreview.imageurl,
-    // owner: state.shareItemPreview.owner,
-    // tags: state.shareItemPreview.tags,
-    // title: state.shareItemPreview.title
-  };
+  return { imageurl: state.shareItemPreview.imageurl };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(ShareItemForm));
+)(
+  compose(
+    graphql(ADD_ITEM_MUTATION, {
+      options: { refetchQueries },
+      name: 'addItemMutation'
+    }),
+    withStyles(styles)
+  )(ShareItemForm)
+);

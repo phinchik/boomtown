@@ -6,7 +6,6 @@ const ShareItemPreview = ({ shareItemPreview }) => {
   return <CardForm item={shareItemPreview} />;
 };
 const mapStateToProps = state => {
-  console.log('state >>>>>', state);
   return { shareItemPreview: state.shareItemPreview };
 };
 
