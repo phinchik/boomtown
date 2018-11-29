@@ -31,7 +31,7 @@ const CardForm = ({ classes, item }) => {
                 title="Item's Picture"
               />
 
-              <Link to={'`/profile/${item.owner.id}`'}>
+              <Link to={`/profile/${item.owner.id}`}>
                 <CardHeader
                   avatar={
                     <Gravatar

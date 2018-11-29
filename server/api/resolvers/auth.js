@@ -12,12 +12,10 @@ function setCookie({ tokenName, token, res }) {
 }
 
 function generateToken(user, secret) {
-  const { id, email, fullname, bio } = user;
-  const token = jwt.sign({ id, email, fullname }, secret, {
+  const { id, email, fullname } = user;
+  return jwt.sign({ id, email, fullname }, secret, {
     expiresIn: '2h'
   });
-  console.log('Generate token: ', token);
-  return token;
 }
 
 module.exports = app => {
@@ -50,7 +48,7 @@ module.exports = app => {
           args.user.email
         );
 
-        const valid = await bcrypt.compare(args.user.password, user.password);
+        const valid = bcrypt.compare(args.user.password, user.password);
 
         if (!valid || !args.user) throw 'User was not found.';
 
@@ -60,7 +58,10 @@ module.exports = app => {
           res: context.req.res
         });
 
-        return user;
+        return {
+          id: user.id,
+          fullname: user.fullname
+        };
       } catch (e) {
         throw new AuthenticationError(e);
       }

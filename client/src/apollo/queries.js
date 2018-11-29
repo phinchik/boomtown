@@ -83,13 +83,13 @@ export const ADD_USER_MUTATION = gql`
 export const ADD_ITEM_MUTATION = gql`
   mutation addItem($item: NewItemInput!) {
     addItem(item: $item) {
-      imageurl
       id
       title
       description
+      timedate
       tags {
-        title
         id
+        title
       }
     }
   }

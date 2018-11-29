@@ -117,58 +117,58 @@ module.exports = postgres => {
         postgres.connect((err, client, done) => {
           try {
             client.query('BEGIN', async err => {
-              const imageStream = imageurl.stream.pipe(strs('base64'));
+              //   const imageStream = image.stream.pipe(strs('base64'));
 
-              let base64Str = '';
-              imageStream.on('data', data => {
-                base64Str += data;
+              //   let base64Str = 'data:image/*;base64,';
+              //   imageStream.on('data', data => {
+              //     base64Str += data;
+              //   });
+
+              //   imageStream.on('end', async () => {
+              const { title, description, tags } = item;
+              const itemQuery = {
+                text:
+                  'INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3) RETURNING *',
+                values: [title, description, user.id]
+              };
+
+              const newItem = await client.query(itemQuery);
+              const itemId = newItem.rows[0].id;
+
+              const tagsQuery = {
+                text: `INSERT INTO itemtags (tagid, itemid) VALUES ${tagsQueryString(
+                  [...tags],
+                  itemId,
+                  ''
+                )}`,
+                values: tags.map(tag => tag.id)
+              };
+
+              client.query(tagsQuery);
+              // const imageUploadQuery = {
+              //   text:
+              //     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+              //   values: [
+              //     // itemid,
+              //     image.filename,
+              //     image.mimetype,
+              //     'base64',
+              //     base64Str
+              //   ]
+              // };
+
+              // await client.query(imageUploadQuery);
+
+              client.query('COMMIT', err => {
+                if (err) {
+                  throw err;
+                }
+                done();
+                resolve(newItem.rows[0]);
               });
 
-              imageStream.on('end', async () => {
-                const { title, description, tags } = item;
-
-                const itemQuery = {
-                  text:
-                    'INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3) RETURNING *',
-                  values: [title, description, user.id]
-                };
-                const newItem = await client.query(itemQuery);
-
-                const itemId = newItem.rows[0].id;
-
-                const imageUploadQuery = {
-                  text:
-                    'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-                  values: [
-                    itemid,
-                    image.filename,
-                    image.mimetype,
-                    'base64',
-                    base64Str
-                  ]
-                };
-
-                await client.query(imageUploadQuery);
-
-                const tagsQuery = {
-                  text: `INSERT INTO itemtags (tagsid, itemid) VALUES ${tagsQueryString(
-                    [...tags],
-                    itemId,
-                    ''
-                  )}`,
-                  values: tags.map(tag => tag.id)
-                };
-
-                await client.query(tagsQuery);
-
-                client.query('COMMIT', err => {
-                  if (err) {
-                    throw err;
-                  }
-                  done();
-                  resolve(newItem.rows[0]);
-                });
-              });
+              //   });
+              // });
             });
           } catch (e) {
             client.query('ROLLBACK', err => {

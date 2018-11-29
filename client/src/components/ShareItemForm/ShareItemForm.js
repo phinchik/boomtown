@@ -80,26 +80,28 @@ class ShareItemForm extends Component {
   }
 
   saveItem(values, addItemMutation, tags) {
-    const {
-      validity,
-      files: [file]
-    } = this.fileInput.current;
-    if (!validity.valid || !file) return;
-    try {
-      const itemData = {
-        title: values.title,
-        description: values.description,
-        tags: this.applyTags(tags)
-      };
-      addItemMutation({
-        variables: {
-          item: itemData,
-          image: file
-        }
-      });
-    } catch (e) {
-      throw e;
-    }
+    console.log('thisss', values);
+    // const {
+    //   validity,
+    //   files: [file]
+    // } = this.fileInput.current;
+    // if (!validity.valid || !file) return;
+    // try {
+    const itemData = {
+      title: values.title,
+      description: values.description,
+      tags: this.applyTags(tags)
+    };
+    addItemMutation({
+      variables: {
+        item: itemData
+        // image: file
+      }
+    });
+    console.log(itemData);
+    // } catch (e) {
+    //   throw e;
+    // }
   }
 
   render() {

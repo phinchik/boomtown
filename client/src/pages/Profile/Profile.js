@@ -1,8 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import React from 'react';
 import ProfileCard from '../../components/ProfileCard/';
-// import { ViewerContext } from '../../context/ViewerProvider';
-
 import styles from './styles';
 import CardForm from '../../components/CardForm';
 import PropTypes from 'prop-types';
@@ -22,7 +20,7 @@ const Profile = ({ classes, data, viewerId }) => {
         {viewerItems &&
           viewerItems.map(item => {
             return (
-              <div className={classes.card}>
+              <div className={classes.card} key={item.id}>
                 <CardForm item={item} />
               </div>
             );
