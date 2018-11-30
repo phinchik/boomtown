@@ -8,6 +8,7 @@ const ItemFields = gql`
   fragment ItemFields on Item {
     id
     title
+    imageurl
     description
     timedate
     tags {
@@ -81,8 +82,8 @@ export const ADD_USER_MUTATION = gql`
 // owner --> { id: email: fullname: }
 
 export const ADD_ITEM_MUTATION = gql`
-  mutation addItem($item: NewItemInput!) {
-    addItem(item: $item) {
+  mutation addItem($item: NewItemInput!, $image: Upload!) {
+    addItem(item: $item, image: $image) {
       id
       title
       description

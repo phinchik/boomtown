@@ -81,27 +81,27 @@ class ShareItemForm extends Component {
 
   saveItem(values, addItemMutation, tags) {
     console.log('thisss', values);
-    // const {
-    //   validity,
-    //   files: [file]
-    // } = this.fileInput.current;
-    // if (!validity.valid || !file) return;
-    // try {
-    const itemData = {
-      title: values.title,
-      description: values.description,
-      tags: this.applyTags(tags)
-    };
-    addItemMutation({
-      variables: {
-        item: itemData
-        // image: file
-      }
-    });
-    console.log(itemData);
-    // } catch (e) {
-    //   throw e;
-    // }
+    const {
+      validity,
+      files: [file]
+    } = this.fileInput.current;
+    if (!validity.valid || !file) return;
+    try {
+      const itemData = {
+        title: values.title,
+        description: values.description,
+        tags: this.applyTags(tags)
+      };
+      addItemMutation({
+        variables: {
+          item: itemData,
+          image: file
+        }
+      });
+      console.log(itemData);
+    } catch (e) {
+      throw e;
+    }
   }
 
   render() {
@@ -252,12 +252,8 @@ const refetchQueries = [
   }
 ];
 
-const mapStateToProps = state => {
-  return { imageurl: state.shareItemPreview.imageurl };
-};
-
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(
   compose(
