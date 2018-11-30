@@ -45,7 +45,8 @@ const ProfileCard = ({ classes, data, items }) => {
 
 ProfileCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  items: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(ProfileCard);

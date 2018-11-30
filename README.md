@@ -1,16 +1,20 @@
 # Boomtown 🏙
 
-##Project 1: Boomtowm
-##Description:
+## Project 1: Boomtowm
 
-- This Project is about an app which allow you to share your post, and borrow other people's post.
+## Description:
+
+- This Project is a full-stack application which allows you borrow and share item post.
 
 ## How to Clone and Run BoomTown
 
-#git clone https://github.com/phinchik/boomtown
-#cd boomtown
-#npm install
-#npm start
+# git clone https://github.com/phinchik/boomtown
+
+# cd boomtown
+
+# npm install
+
+# npm start
 
 ## Author
 
@@ -18,13 +22,20 @@ Jenny Gutierrez
 
 ## Technologies Used
 
-PostgresQL
-Postico
-GraphQl
-Node.js
-Express
-React
-Redux
+### Backend
+
+- PostgresQL
+- Postico
+- GraphQl
+- Node.js
+- Express
+- Apollo
+
+### Frontend
+
+- React
+- Redux
+- Apollo Client
 
 ## Server
 
