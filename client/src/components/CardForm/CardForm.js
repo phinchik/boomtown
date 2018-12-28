@@ -14,7 +14,6 @@ import { ViewerContext } from '../../context/ViewerProvider';
 import moment from 'moment';
 
 const CardForm = ({ classes, item }) => {
-  console.log(item);
   return (
     <ViewerContext.Consumer>
       {({ viewer }) => {

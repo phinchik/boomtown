@@ -96,12 +96,6 @@ module.exports = app => {
         }
       }
     },
-    // async imageurl({ imageurl, imageid, mimetype, data }) {
-    //   if (imageurl) return imageurl;
-    //   if (imageid) {
-    //     return `data:${mimetype};base64, ${data}`;
-    //   }
-    // },
 
     Mutation: {
       ...authMutations(app),

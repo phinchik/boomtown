@@ -80,7 +80,6 @@ class ShareItemForm extends Component {
   }
 
   saveItem(values, addItemMutation, tags) {
-    console.log('thisss', values);
     const {
       validity,
       files: [file]
